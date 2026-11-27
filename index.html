@@ -1,0 +1,840 @@
+# wed-htinhf-
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#ff85a2" />
+  <title>Bộ Đàm Tình Yêu 💕</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #ffb3c6 100%);
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+      overflow: hidden;
+      color: #590d22;
+    }
+
+    /* Ăng-ten bộ đàm */
+    .walkie-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 390px;
+      padding-top: 42px;
+    }
+    .antenna {
+      position: absolute;
+      top: 0;
+      right: 42px;
+      width: 18px;
+      height: 55px;
+      background: linear-gradient(90deg, #ff4d6d, #ff758f);
+      border-radius: 12px 12px 0 0;
+      box-shadow: inset -3px 0 6px rgba(0,0,0,0.15);
+      z-index: 1;
+    }
+    .antenna::before {
+      content: "💗";
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 22px;
+      animation: bounce 2s infinite;
+    }
+
+    /* Thân máy bộ đàm */
+    .walkie-body {
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(180deg, #fff0f3 0%, #ffe5ec 100%);
+      border: 5px solid #ff8fa3;
+      border-radius: 42px;
+      padding: 18px 18px 22px;
+      box-shadow:
+        0 18px 35px rgba(255, 77, 109, 0.28),
+        inset 0 4px 10px #ffffff,
+        inset 0 -8px 15px rgba(255, 117, 143, 0.25);
+    }
+
+    /* Loa trên đỉnh */
+    .speaker-grill {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+    .speaker-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff8fa3;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+    }
+
+    /* Màn hình LCD bộ đàm */
+    .lcd-screen {
+      background: linear-gradient(180deg, #2b192e 0%, #3d1e38 100%);
+      border: 4px solid #ff758f;
+      border-radius: 22px;
+      padding: 12px;
+      color: #fff0f3;
+      box-shadow: inset 0 4px 12px rgba(0,0,0,0.5);
+      margin-bottom: 14px;
+    }
+    .lcd-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 8px;
+      color: #ffb3c6;
+    }
+    .badge {
+      background: rgba(255, 117, 143, 0.22);
+      border: 1px solid #ff758f;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-weight: 700;
+    }
+    .badge.online {
+      background: rgba(74, 222, 128, 0.2);
+      border-color: #4ade80;
+      color: #86efac;
+    }
+
+    .avatars-row {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 8px 0;
+    }
+    .avatar-box {
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .avatar-box.speaking {
+      transform: scale(1.1);
+    }
+    .avatar-circle {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #590d22;
+      border: 2.5px solid #ff8fa3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 4px;
+    }
+    .avatar-box.speaking .avatar-circle {
+      border-color: #4ade80;
+      box-shadow: 0 0 15px #4ade80;
+    }
+    .avatar-label {
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .signal-line {
+      font-size: 18px;
+      color: #ff758f;
+      letter-spacing: 2px;
+    }
+
+    /* Thanh sóng âm */
+    .visualizer {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 4px;
+      height: 22px;
+      margin: 6px 0;
+    }
+    .bar {
+      width: 4px;
+      height: 5px;
+      background: #ff758f;
+      border-radius: 4px;
+      transition: height 0.08s ease;
+    }
+    .status-text {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffccd5;
+      min-height: 18px;
+    }
+
+    /* Khu vực cài đặt phòng */
+    .setup-box {
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 18px;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1.5px solid #ffb3c6;
+    }
+    .role-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .role-btn {
+      flex: 1;
+      padding: 7px;
+      border-radius: 12px;
+      border: 2px solid #ffb3c6;
+      background: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 13px;
+      color: #800f2f;
+      cursor: pointer;
+    }
+    .role-btn.active {
+      background: #ff4d6d;
+      color: #fff;
+      border-color: #ff4d6d;
+    }
+    .room-row {
+      display: flex;
+      gap: 6px;
+    }
+    .room-input {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 2px solid #ffb3c6;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #590d22;
+      outline: none;
+      width: 100%;
+    }
+    .btn-connect {
+      padding: 8px 14px;
+      border-radius: 12px;
+      border: none;
+      background: #ff4d6d;
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-share {
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 2px solid #ff8fa3;
+      background: #fff;
+      color: #ff4d6d;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Thanh công cụ âm thanh & chạy nền */
+    .audio-tools {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .tool-chip {
+      flex: 1;
+      padding: 7px 6px;
+      border-radius: 12px;
+      border: 1.5px solid #ff8fa3;
+      background: #fff;
+      color: #800f2f;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+    .tool-chip.active {
+      background: #d8f3dc;
+      border-color: #40916c;
+      color: #1b4332;
+    }
+
+    /* Nút trái tim khổng lồ ở giữa */
+    .ptt-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 6px 0 14px;
+    }
+    .heart-btn {
+      position: relative;
+      width: 132px;
+      height: 132px;
+      border-radius: 50%;
+      border: 6px solid #fff;
+      background: radial-gradient(circle at 30% 30%, #ff758f, #ff4d6d 65%, #c9184a);
+      box-shadow:
+        0 12px 24px rgba(201, 24, 74, 0.4),
+        inset 0 4px 8px rgba(255, 255, 255, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      touch-action: none;
+    }
+    .heart-btn:active, .heart-btn.pressed {
+      transform: scale(0.92);
+      background: radial-gradient(circle at 30% 30%, #ff4d6d, #c9184a);
+      box-shadow: 0 0 0 12px rgba(255, 77, 109, 0.25);
+    }
+    .heart-icon {
+      font-size: 48px;
+      line-height: 1;
+      filter: drop-shadow(0 3px 4px rgba(0,0,0,0.2));
+    }
+    .heart-hint {
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hàng nút cảm xúc nhanh */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .action-btn {
+      padding: 9px 4px;
+      border-radius: 14px;
+      border: 2px solid #ffb3c6;
+      background: #fff;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      color: #800f2f;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #ffb3c6;
+    }
+    .action-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #ffb3c6;
+    }
+
+    /* Hiệu ứng tim bay */
+    .floating-heart {
+      position: fixed;
+      font-size: 28px;
+      pointer-events: none;
+      animation: floatUp 2.2s ease-out forwards;
+      z-index: 999;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.7); opacity: 1; }
+      100% { transform: translateY(-280px) scale(1.4); opacity: 0; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-5px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Thẻ audio phát giọng nói từ đối phương (quan trọng cho di động) -->
+  <audio id="remoteAudio" autoplay playsinline></audio>
+
+  <div class="walkie-wrapper">
+    <div class="antenna"></div>
+    <div class="walkie-body">
+      <div class="speaker-grill">
+        <div class="speaker-dot"></div><div class="speaker-dot"></div><div class="speaker-dot"></div>
+        <div class="speaker-dot"></div><div class="speaker-dot"></div><div class="speaker-dot"></div>
+      </div>
+
+      <!-- Màn hình LCD -->
+      <div class="lcd-screen">
+        <div class="lcd-top">
+          <span id="connBadge" class="badge">⚪ Chưa vào phòng</span>
+          <span id="modeBadge">P2P + Voice</span>
+        </div>
+
+        <div class="avatars-row">
+          <div class="avatar-box" id="boxBoy">
+            <div class="avatar-circle">👦🏻</div>
+            <div class="avatar-label" id="labelBoy">Bạn Nam</div>
+          </div>
+          <div class="signal-line" id="signalWave">•••💕•••</div>
+          <div class="avatar-box" id="boxGirl">
+            <div class="avatar-circle">👧🏻</div>
+            <div class="avatar-label" id="labelGirl">Bạn Nữ</div>
+          </div>
+        </div>
+
+        <div class="visualizer" id="visualizer"></div>
+        <div class="status-text" id="statusText">Chọn vai trò & bấm Vào Phòng</div>
+      </div>
+
+      <!-- Chọn vai trò & mã phòng -->
+      <div class="setup-box">
+        <div class="role-selector">
+          <button class="role-btn active" id="btnRoleBoy" onclick="selectRole('boy')">👦🏻 Mình là Nam</button>
+          <button class="role-btn" id="btnRoleGirl" onclick="selectRole('girl')">👧🏻 Mình là Nữ</button>
+        </div>
+        <div class="room-row">
+          <input type="text" id="roomInput" class="room-input" value="LOVE99" placeholder="Nhập mã phòng..." />
+          <button class="btn-connect" id="btnJoin" onclick="joinRoom()">Vào Phòng</button>
+          <button class="btn-share" onclick="shareInvite()" title="Gửi link mời">🔗</button>
+        </div>
+      </div>
+
+      <!-- Nút mở khóa loa & chạy nền -->
+      <div class="audio-tools">
+        <button class="tool-chip" id="btnUnlockAudio" onclick="unlockAudio(true)">🔊 Mở & Thử Loa</button>
+        <button class="tool-chip" id="btnKeepAlive" onclick="toggleKeepAlive()">🌙 Chạy Nền: Tắt</button>
+      </div>
+
+      <!-- Nút bấm nói trái tim -->
+      <div class="ptt-container">
+        <button class="heart-btn" id="pttBtn">
+          <span class="heart-icon">❤️</span>
+          <span class="heart-hint" id="pttHint">GIỮ ĐỂ NÓI</span>
+        </button>
+      </div>
+
+      <!-- Tín hiệu nhanh -->
+      <div class="quick-actions">
+        <button class="action-btn" onclick="sendSignal('miss', '💓 Nhớ bạn quá!')">💓 Nhớ bạn</button>
+        <button class="action-btn" onclick="sendSignal('kiss', '😘 Gửi ngàn nụ hôn!')">😘 Hôn gió</button>
+        <button class="action-btn" onclick="sendSignal('ring', '🔔 Bắt máy nghe đi!')">🔔 Gọi chuông</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, push, onValue, onChildAdded, remove, serverTimestamp, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQKrsf4BGtI8-PUB1oyp5wz-OpL11MP1A",
+      authDomain: "quanlykey-f0f93.firebaseapp.com",
+      databaseURL: "https://quanlykey-f0f93-default-rtdb.firebaseio.com",
+      projectId: "quanlykey-f0f93",
+      storageBucket: "quanlykey-f0f93.firebasestorage.app",
+      messagingSenderId: "430622101392",
+      appId: "1:430622101392:web:69c5f7ade5090dbfe12d15",
+      measurementId: "G-ZER47R9MH1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let myRole = 'boy';
+    let roomCode = '';
+    let joined = false;
+    let localStream = null;
+    let peerConnection = null;
+    let iceQueue = [];
+    let isTalking = false;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let audioCtx = null;
+    let keepAliveActive = false;
+    let wakeLock = null;
+    let silentOsc = null;
+
+    const remoteAudio = document.getElementById('remoteAudio');
+    const statusText = document.getElementById('statusText');
+    const connBadge = document.getElementById('connBadge');
+
+    // Tạo 16 cột sóng âm
+    const vis = document.getElementById('visualizer');
+    for (let i = 0; i < 16; i++) {
+      const b = document.createElement('div');
+      b.className = 'bar';
+      vis.appendChild(b);
+    }
+    const bars = document.querySelectorAll('.bar');
+
+    // Tự điền mã phòng từ URL (?room=...)
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('room')) {
+      document.getElementById('roomInput').value = params.get('room').toUpperCase();
+    }
+
+    window.selectRole = (role) => {
+      myRole = role;
+      document.getElementById('btnRoleBoy').classList.toggle('active', role === 'boy');
+      document.getElementById('btnRoleGirl').classList.toggle('active', role === 'girl');
+    };
+
+    // Âm thanh tít tít bộ đàm bằng Web Audio API
+    function playBeep(freq = 880, duration = 0.12, type = 'sine') {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    // Mở khóa loa di động (quan trọng để nghe được tiếng trên iOS/Android)
+    window.unlockAudio = async (withTestSound = false) => {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
+        remoteAudio.muted = false;
+        remoteAudio.volume = 1.0;
+        if (remoteAudio.srcObject) {
+          await remoteAudio.play().catch(() => {});
+        }
+        if (withTestSound) {
+          playBeep(660, 0.12);
+          setTimeout(() => playBeep(990, 0.18), 140);
+          statusText.textContent = '🔊 Loa đã mở sẵn sàng nghe!';
+        }
+        const btn = document.getElementById('btnUnlockAudio');
+        btn.classList.add('active');
+        btn.textContent = '🔊 Loa Đã Mở';
+      } catch (err) {
+        statusText.textContent = '⚠️ Chạm màn hình để bật âm thanh';
+      }
+    };
+
+    // Chế độ chạy nền + giữ sáng màn hình
+    window.toggleKeepAlive = async () => {
+      const btn = document.getElementById('btnKeepAlive');
+      keepAliveActive = !keepAliveActive;
+      if (keepAliveActive) {
+        try {
+          if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+          }
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          silentOsc = audioCtx.createOscillator();
+          const silentGain = audioCtx.createGain();
+          silentGain.gain.value = 0.0001; // Sóng siêu nhỏ giữ phiên âm thanh chạy nền
+          silentOsc.connect(silentGain);
+          silentGain.connect(audioCtx.destination);
+          silentOsc.start();
+
+          if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+              title: 'Bộ Đàm Tình Yêu 💕',
+              artist: 'Đang giữ kết nối bộ đàm...',
+            });
+          }
+        } catch (e) {}
+        btn.classList.add('active');
+        btn.textContent = '🌙 Chạy Nền: Bật';
+      } else {
+        if (wakeLock) { wakeLock.release(); wakeLock = null; }
+        if (silentOsc) { silentOsc.stop(); silentOsc = null; }
+        btn.classList.remove('active');
+        btn.textContent = '🌙 Chạy Nền: Tắt';
+      }
+    };
+
+    window.shareInvite = async () => {
+      const code = document.getElementById('roomInput').value.trim().toUpperCase() || 'LOVE99';
+      const url = `${window.location.origin}${window.location.pathname}?room=${encodeURIComponent(code)}`;
+      if (navigator.share) {
+        await navigator.share({ title: 'Bộ Đàm Tình Yêu 💕', text: `Vào phòng ${code} nói chuyện bộ đàm với mình nhé!`, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        alert('Đã sao chép link mời: ' + url);
+      }
+    };
+
+    // Khởi tạo WebRTC giữ đường truyền luôn mở
+    async function setupWebRTC(partnerRole) {
+      const config = {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:stun1.l.google.com:19302' }
+        ]
+      };
+
+      if (peerConnection) peerConnection.close();
+      peerConnection = new RTCPeerConnection(config);
+      iceQueue = [];
+
+      // Đẩy mic vào đường truyền nhưng mặc định TẮT tiếng cho đến khi bấm giữ nút trái tim
+      localStream.getTracks().forEach(track => {
+        track.enabled = false;
+        peerConnection.addTrack(track, localStream);
+      });
+
+      // Nhận luồng âm thanh từ đối phương
+      peerConnection.ontrack = (event) => {
+        if (event.streams && event.streams[0]) {
+          remoteAudio.srcObject = event.streams[0];
+          remoteAudio.muted = false;
+          remoteAudio.play().catch(() => {
+            statusText.textContent = '👉 Bấm "Mở & Thử Loa" để nghe tiếng!';
+          });
+        }
+      };
+
+      const myIceRef = ref(db, `rooms/${roomCode}/ice_${myRole}`);
+      const partnerIceRef = ref(db, `rooms/${roomCode}/ice_${partnerRole}`);
+      await remove(myIceRef);
+
+      peerConnection.onicecandidate = (e) => {
+        if (e.candidate) {
+          push(myIceRef, e.candidate.toJSON());
+        }
+      };
+
+      onChildAdded(partnerIceRef, async (snap) => {
+        const candidate = snap.val();
+        if (!candidate) return;
+        if (peerConnection.remoteDescription) {
+          await peerConnection.addIceCandidate(new RTCIceCandidate(candidate)).catch(() => {});
+        } else {
+          iceQueue.push(candidate);
+        }
+      });
+
+      const offerRef = ref(db, `rooms/${roomCode}/offer`);
+      const answerRef = ref(db, `rooms/${roomCode}/answer`);
+
+      // Bạn Nam đóng vai trò khởi tạo cuộc gọi P2P, Bạn Nữ tự động trả lời
+      if (myRole === 'boy') {
+        await remove(offerRef);
+        await remove(answerRef);
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        await set(offerRef, { type: offer.type, sdp: offer.sdp });
+
+        onValue(answerRef, async (snap) => {
+          const answer = snap.val();
+          if (answer && !peerConnection.currentRemoteDescription) {
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+            while (iceQueue.length) {
+              await peerConnection.addIceCandidate(new RTCIceCandidate(iceQueue.shift())).catch(() => {});
+            }
+          }
+        });
+      } else {
+        onValue(offerRef, async (snap) => {
+          const offer = snap.val();
+          if (offer && !peerConnection.currentRemoteDescription) {
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+            while (iceQueue.length) {
+              await peerConnection.addIceCandidate(new RTCIceCandidate(iceQueue.shift())).catch(() => {});
+            }
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            await set(answerRef, { type: answer.type, sdp: answer.sdp });
+          }
+        });
+      }
+    }
+
+    window.joinRoom = async () => {
+      roomCode = document.getElementById('roomInput').value.trim().toUpperCase();
+      if (!roomCode) return alert('Vui lòng nhập mã phòng!');
+
+      await unlockAudio(false);
+
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+        });
+      } catch (err) {
+        alert('Không bật được Micro! Hãy mở bằng trình duyệt Safari/Chrome và cấp quyền Micro.');
+        return;
+      }
+
+      joined = true;
+      const partnerRole = myRole === 'boy' ? 'girl' : 'boy';
+
+      // Đánh dấu trạng thái online
+      const myPresenceRef = ref(db, `rooms/${roomCode}/presence/${myRole}`);
+      await set(myPresenceRef, { online: true, talking: false, ts: serverTimestamp() });
+      onDisconnect(myPresenceRef).remove();
+
+      // Theo dõi đối phương online & trạng thái nói
+      onValue(ref(db, `rooms/${roomCode}/presence`), (snap) => {
+        const data = snap.val() || {};
+        const partnerOnline = data[partnerRole]?.online;
+        const partnerTalking = data[partnerRole]?.talking;
+
+        if (partnerOnline) {
+          connBadge.textContent = `🟢 Phòng ${roomCode} (Đủ 2 người)`;
+          connBadge.classList.add('online');
+        } else {
+          connBadge.textContent = `🟡 Phòng ${roomCode} (Đang chờ...)`;
+          connBadge.classList.remove('online');
+        }
+
+        const partnerBox = document.getElementById(partnerRole === 'boy' ? 'boxBoy' : 'boxGirl');
+        partnerBox.classList.toggle('speaking', !!partnerTalking);
+
+        if (partnerTalking) {
+          statusText.textContent = `🎙️ ${partnerRole === 'boy' ? 'Bạn Nam' : 'Bạn Nữ'} đang nói...`;
+          animateWave(true);
+        } else if (!isTalking) {
+          statusText.textContent = partnerOnline ? '✨ Sẵn sàng! Giữ trái tim để nói' : '⏳ Chờ người kia vào phòng...';
+          animateWave(false);
+        }
+      });
+
+      // Kênh dự phòng Voice Note (tự phát đoạn ghi âm nếu mạng 4G chặn WebRTC P2P)
+      const voiceRef = ref(db, `rooms/${roomCode}/voice_${partnerRole}`);
+      await remove(voiceRef);
+      onValue(voiceRef, (snap) => {
+        const val = snap.val();
+        if (val && val.audio && (!peerConnection || peerConnection.iceConnectionState !== 'connected')) {
+          const fallbackAudio = new Audio(val.audio);
+          fallbackAudio.play().catch(() => {});
+        }
+      });
+
+      // Nhận tín hiệu cảm xúc (Nhớ bạn / Hôn gió / Gọi chuông)
+      const signalRef = ref(db, `rooms/${roomCode}/signal_${partnerRole}`);
+      await remove(signalRef);
+      onValue(signalRef, (snap) => {
+        const sig = snap.val();
+        if (!sig) return;
+        playBeep(1046, 0.15);
+        setTimeout(() => playBeep(1318, 0.2), 160);
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        statusText.textContent = sig.text;
+        spawnHearts();
+      });
+
+      await setupWebRTC(partnerRole);
+      playBeep(784, 0.12);
+      statusText.textContent = '✅ Đã vào phòng ' + roomCode;
+    };
+
+    // Xử lý nhấn giữ nút trái tim để nói
+    const pttBtn = document.getElementById('pttBtn');
+
+    async function startTalking(e) {
+      e.preventDefault();
+      if (!joined || !localStream || isTalking) return;
+      isTalking = true;
+      pttBtn.classList.add('pressed');
+      document.getElementById('pttHint').textContent = 'ĐANG NÓI...';
+      playBeep(980, 0.08);
+      if (navigator.vibrate) navigator.vibrate(40);
+
+      // Mở mic truyền trực tiếp qua WebRTC
+      localStream.getAudioTracks().forEach(t => t.enabled = true);
+      document.getElementById(myRole === 'boy' ? 'boxBoy' : 'boxGirl').classList.add('speaking');
+      statusText.textContent = '📡 Đang phát giọng nói của bạn...';
+      animateWave(true);
+
+      await set(ref(db, `rooms/${roomCode}/presence/${myRole}`), {
+        online: true, talking: true, ts: serverTimestamp()
+      });
+
+      // Ghi âm song song làm kênh dự phòng nếu mạng chặn P2P
+      try {
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(localStream);
+        mediaRecorder.ondataavailable = ev => { if (ev.data.size > 0) audioChunks.push(ev.data); };
+        mediaRecorder.onstop = () => {
+          if (!peerConnection || peerConnection.iceConnectionState !== 'connected') {
+            const blob = new Blob(audioChunks, { type: 'audio/webm' });
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              set(ref(db, `rooms/${roomCode}/voice_${myRole}`), { audio: reader.result, ts: Date.now() });
+            };
+            reader.readAsDataURL(blob);
+          }
+        };
+        mediaRecorder.start();
+      } catch (err) {}
+    }
+
+    async function stopTalking(e) {
+      if (e) e.preventDefault();
+      if (!isTalking) return;
+      isTalking = false;
+      pttBtn.classList.remove('pressed');
+      document.getElementById('pttHint').textContent = 'GIỮ ĐỂ NÓI';
+      playBeep(620, 0.08);
+
+      // Tắt mic
+      if (localStream) localStream.getAudioTracks().forEach(t => t.enabled = false);
+      document.getElementById(myRole === 'boy' ? 'boxBoy' : 'boxGirl').classList.remove('speaking');
+      animateWave(false);
+
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+
+      if (joined) {
+        await set(ref(db, `rooms/${roomCode}/presence/${myRole}`), {
+          online: true, talking: false, ts: serverTimestamp()
+        });
+      }
+    }
+
+    pttBtn.addEventListener('pointerdown', startTalking);
+    window.addEventListener('pointerup', stopTalking);
+    window.addEventListener('pointercancel', stopTalking);
+
+    window.sendSignal = async (type, text) => {
+      if (!joined) return alert('Hãy bấm "Vào Phòng" trước nhé!');
+      playBeep(880, 0.1);
+      spawnHearts();
+      await set(ref(db, `rooms/${roomCode}/signal_${myRole}`), { type, text, ts: Date.now() });
+    };
+
+    let waveTimer = null;
+    function animateWave(active) {
+      clearInterval(waveTimer);
+      if (!active) {
+        bars.forEach(b => b.style.height = '5px');
+        return;
+      }
+      waveTimer = setInterval(() => {
+        bars.forEach(b => {
+          b.style.height = (Math.floor(Math.random() * 18) + 4) + 'px';
+        });
+      }, 90);
+    }
+
+    function spawnHearts() {
+      const icons = ['❤️', '💕', '💖', '💗', '😘'];
+      for (let i = 0; i < 8; i++) {
+        const el = document.createElement('div');
+        el.className = 'floating-heart';
+        el.textContent = icons[Math.floor(Math.random() * icons.length)];
+        el.style.left = (15 + Math.random() * 70) + 'vw';
+        el.style.bottom = '110px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 2200);
+      }
+    }
+  </script>
+</body>
+</html>
